@@ -1,6 +1,7 @@
 import { Component } from 'react';
-
+import { ImUserMinus } from 'react-icons/im';
 import { ContactForm } from './ContactForm/ContactForm';
+import { Filter } from './Filter/Filter';
 export class App extends Component {
   state = {
     contacts: [
@@ -35,16 +36,15 @@ export class App extends Component {
         <ContactForm onSubmit={this.addNewContact} />
         <h2>Contacts</h2>
         <p>Find contacts by name</p>
-        <input
-          type="text"
-          value={filter}
-          name="filter"
-          onChange={this.handleFilterChange}
-        />
+
+        <Filter value={filter} onChange={this.handleFilterChange} />
         <ul>
           {filteredContacts.map(({ name, id, number }) => (
             <li key={id}>
-              {name}: {number}
+              {name}: {number}{' '}
+              <button>
+                del <ImUserMinus />
+              </button>
             </li>
           ))}
         </ul>
