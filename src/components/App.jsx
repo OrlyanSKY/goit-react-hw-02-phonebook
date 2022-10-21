@@ -1,5 +1,6 @@
+import { Container } from 'Container.styled';
 import { Component } from 'react';
-
+import { Text } from './ContactForm/ContactForm.styled';
 import { ContactForm } from './ContactForm/ContactForm';
 import { ContactList } from './ContactList/ContactList';
 import { Filter } from './Filter/Filter';
@@ -41,22 +42,21 @@ export class App extends Component {
     const { contacts, filter } = this.state;
 
     return (
-      <div>
+      <Container>
         <h1>Phonebook</h1>
         <ContactForm
           onSubmit={this.addNewContact}
           delContact={this.delContact}
         />
         <h2>Contacts</h2>
-        <p>Find contacts by name</p>
-
+        <Text>Find contacts by name</Text>
         <Filter value={filter} onChange={this.handleFilterChange} />
         <ContactList
           contacts={contacts}
           filter={filter}
           delContact={this.delContact}
         />
-      </div>
+      </Container>
     );
   }
 }

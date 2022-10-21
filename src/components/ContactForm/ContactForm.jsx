@@ -1,6 +1,8 @@
 import { Component } from 'react';
 import { nanoid } from 'nanoid';
+import PropTypes from 'prop-types';
 
+import { Form, Label, Field, Button } from './ContactForm.styled';
 export class ContactForm extends Component {
   state = {
     name: '',
@@ -35,11 +37,10 @@ export class ContactForm extends Component {
   render() {
     const { name, number } = this.state;
     return (
-      <form onSubmit={this.handleFormSubmit}>
-        <label>
+      <Form onSubmit={this.handleFormSubmit}>
+        <Label>
           Name
-          <br />
-          <input
+          <Field
             type="text"
             name="name"
             pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
@@ -48,12 +49,10 @@ export class ContactForm extends Component {
             value={name}
             onChange={this.handleNameChange}
           />
-        </label>
-        <label>
-          <br />
+        </Label>
+        <Label>
           Number
-          <br />
-          <input
+          <Field
             type="tel"
             name="number"
             pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
@@ -62,11 +61,15 @@ export class ContactForm extends Component {
             value={number}
             onChange={this.handleNameChange}
           />
-        </label>
+        </Label>
 
-        <br />
-        <button type="submit">Add contact</button>
-      </form>
+        <Button type="submit">Add contact</Button>
+      </Form>
     );
   }
 }
+
+ContactForm.propTypes = {
+  delContact: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+};
