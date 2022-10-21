@@ -1,6 +1,7 @@
 import { Component } from 'react';
-import { ImUserMinus } from 'react-icons/im';
+
 import { ContactForm } from './ContactForm/ContactForm';
+import { ContactList } from './ContactList/ContactList';
 import { Filter } from './Filter/Filter';
 export class App extends Component {
   state = {
@@ -13,42 +14,49 @@ export class App extends Component {
     filter: '',
   };
 
-  addNewContact = contact => {
+  addNewContact = newContact => {
+    const { contacts } = this.state;
+
+    if (contacts.find(({ name }) => name === newContact.name)) {
+      alert(`${newContact.name} is alredy in contacts`);
+      return;
+    }
     this.setState(prevState => ({
-      contacts: [contact, ...prevState.contacts],
+      contacts: [newContact, ...prevState.contacts],
     }));
   };
+
   handleFilterChange = e => {
     const { name, value } = e.currentTarget;
     this.setState({ [name]: value });
   };
 
+  delContact = contactId => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== contactId),
+    }));
+  };
+
   render() {
     const { contacts, filter } = this.state;
 
-    const normalizedFilter = filter.toLowerCase();
-    const filteredContacts = contacts.filter(contact =>
-      contact.name.toLowerCase().includes(normalizedFilter)
-    );
     return (
-      <>
+      <div>
         <h1>Phonebook</h1>
-        <ContactForm onSubmit={this.addNewContact} />
+        <ContactForm
+          onSubmit={this.addNewContact}
+          delContact={this.delContact}
+        />
         <h2>Contacts</h2>
         <p>Find contacts by name</p>
 
         <Filter value={filter} onChange={this.handleFilterChange} />
-        <ul>
-          {filteredContacts.map(({ name, id, number }) => (
-            <li key={id}>
-              {name}: {number}{' '}
-              <button>
-                del <ImUserMinus />
-              </button>
-            </li>
-          ))}
-        </ul>
-      </>
+        <ContactList
+          contacts={contacts}
+          filter={filter}
+          delContact={this.delContact}
+        />
+      </div>
     );
   }
 }
